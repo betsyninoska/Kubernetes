@@ -1,0 +1,102 @@
+Lanzar un cluster en minikube
+minikube start -- driver=docker -p clusterDesa -- nodes=2
+
+Listar los perfiles creados
+minikube profile list
+
+Cambiar configuracion de Cluster
+-------------------------------
+minikube config set memory 4G -p nombrecluster
+*Mucho cuidado porque si ya hay recursos puedo perderlos
+
+Cambiar de Cluster
+------------------
+minikube profile nombrecluster
+
+
+minikube start --container_runtime=cri-o -p cluster2
+
+
+kubernete
+imperativo:con comando  otro declarativo: utiliza un fichero
+
+kubectl run ngin1 --imagen=nginx
+kubectl  get pods -o wide (Como funciona)
+
+kubectl describe componente/tipo es decir:
+------------------------------------------
+	kubectl describe pod/nginx2
+
+
+
+kubectl exec nombre del pod y el --comando
+------------------------------------------
+kubectl exec nginx1 --ls
+kubectl exec nginx1 --uname -a
+kubectl exec nginx1 -it --bash
+
+
+ejemplo 
+--------
+kubectl run apache --image=httpd  --port=8080 --generator=run-pod/v1 
+
+kubectl logs -f apache
+kubectl  get pods
+
+kubectl exec apache it bash
+
+
+localhost:8080/apiv1/namespace/default
+
+localhost:8080/apiv1/namespace/default/pod
+localhost:8080/apiv1/namespace/default/pod/apache
+localhost:8080/apiv1/namespace/default/pod/apache/proxy
+
+kubectl proxy
+
+-------------
+
+kubectl expose pod nginx1 --port=80 --name=nginx1-svc --type=LoadBalancer
+
+port for warning engaña al navegador local para que lo mande al puerto de k8
+---------------------------------------------------------------------------
+
+kubectl port-forward nginx puerto local:puerto remoto
+kubectl port-forward nginx 9999:80
+
+
+
+
+
+
+Ejercicio completo
+------------------
+
+kubectl expose pod nginx --name=nginx-svc --port=80 --type=LoadBalancer
+kubectl get svc nginx-svc
+
+generar la configuracion de un pod en json o yaml
+**********************************************
+kubectl get pod/nginx -o yaml >nombre.yaml
+
+kubectl get pod/nginx -o json >nombre.json
+
+
+
+
+
+Crear 
+-----
+kubectl create -f nginx.yaml
+
+
+
+Borrar  
+--------
+kubectl get pods
+kubectl delete  pod nginx1
+kubectl delete  pod apache --grace-period=5 espera 5 segundo
+kubectl delete  pod apache --now borra todo sin esperar
+Borrar   todo ojo
+----------------------
+kubectl delete all --all
